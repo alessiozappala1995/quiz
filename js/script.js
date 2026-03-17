@@ -53,7 +53,7 @@ const quiz = [
 
 let currentQuestion = 0;
 let score = 0;
-let time = 10;
+let time = 60;
 let timerInterval;
 
 const questionEl = document.getElementById("question");
@@ -68,8 +68,6 @@ function loadQuestion() {
 
   const q = quiz[currentQuestion];
   questionEl.textContent = q.question;
-
-  // progresso
   progressEl.style.width = ((currentQuestion / quiz.length) * 100) + "%";
 
   q.answers.forEach((answer, index) => {
@@ -83,13 +81,14 @@ function loadQuestion() {
 
 function startTimer() {
   time = 60;
+  timerEl.style.display = "block";
   timerEl.textContent = "Tempo: " + time;
 
   timerInterval = setInterval(() => {
     time--;
     timerEl.textContent = "Tempo: " + time;
 
-    if (time === 0) {
+    if (time <= 0) {
       clearInterval(timerInterval);
       autoFail();
     }
@@ -99,6 +98,18 @@ function startTimer() {
 function autoFail() {
   const buttons = document.querySelectorAll(".answer-btn");
   buttons.forEach(btn => btn.disabled = true);
+
+  // evidenzia solo la risposta corretta
+  buttons[quiz[currentQuestion].correct].classList.add("correct");
+
+  // messaggio chiaro di timeout
+  const feedback = document.createElement("p");
+  feedback.textContent = `⏱ Tempo scaduto! La risposta corretta era: ${quiz[currentQuestion].answers[quiz[currentQuestion].correct]}`;
+  feedback.style.color = "orange";
+  feedback.style.fontWeight = "bold";
+  feedback.style.marginTop = "10px";
+
+  answersEl.appendChild(feedback);
   nextBtn.style.display = "block";
 }
 
@@ -114,20 +125,30 @@ function selectAnswer(index) {
   const q = quiz[currentQuestion];
   const buttons = document.querySelectorAll(".answer-btn");
 
+  let feedback = document.createElement("p");
+  feedback.style.fontWeight = "bold";
+  feedback.style.marginTop = "10px";
+
   buttons.forEach((btn, i) => {
-    if (i === q.correct) {
-      btn.classList.add("correct");
-    } else {
-      btn.classList.add("wrong");
-    }
+    if (i === q.correct) btn.classList.add("correct");
+    else btn.classList.add("wrong");
     btn.disabled = true;
   });
 
-  if (index === q.correct) score++;
+  if (index === q.correct) {
+    score++;
+    feedback.textContent = "✅ Corretto!";
+    feedback.style.color = "green";
+  } else {
+    feedback.textContent = `❌ Sbagliato! La risposta corretta era: ${q.answers[q.correct]}`;
+    feedback.style.color = "red";
+  }
 
+  answersEl.appendChild(feedback);
   nextBtn.style.display = "block";
 }
 
+// passa alla prossima domanda o mostra punteggio finale
 nextBtn.onclick = () => {
   currentQuestion++;
   if (currentQuestion < quiz.length) {
@@ -140,11 +161,13 @@ nextBtn.onclick = () => {
 function showScore() {
   questionEl.textContent = `SCORE: ${score} / ${quiz.length}`;
   answersEl.innerHTML = "";
+  progressEl.style.width = "100%";
+  timerEl.style.display = "none";
+
   nextBtn.textContent = "RESTART";
   nextBtn.style.display = "block";
   nextBtn.onclick = () => location.reload();
-  progressEl.style.width = "100%";
-  timerEl.style.display = "none";
 }
 
+// avvia il quiz
 loadQuestion();
