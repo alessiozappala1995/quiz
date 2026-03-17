@@ -45,11 +45,16 @@ body {
 }
 
 .title {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-family: 'Bebas Neue', sans-serif; /* font elegante e da titolo */
+  font-size: 28px;  /* puoi regolare la grandezza */
+  font-weight: 700;
   letter-spacing: 2px;
+  margin-bottom: 10px;
+  color: #111;
+  text-transform: uppercase; /* tutto maiuscolo */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* piccolo effetto 3D */
 }
+
 
 #question {
   font-size: 18px;
