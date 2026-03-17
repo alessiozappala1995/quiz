@@ -1,3 +1,4 @@
+/* Reset e base */
 * {
   margin: 0;
   padding: 0;
@@ -11,14 +12,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px; /* spazio su piccoli schermi */
 }
 
 .quiz-container {
   background: #fff;
   padding: 30px;
   border-radius: 15px;
-  width: 420px;
+  width: 100%;
+  max-width: 420px; /* mantiene la larghezza massima su desktop */
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
   text-align: center;
   border: 2px solid #000;
@@ -105,4 +108,48 @@ body {
   margin-top: 10px;
   font-size: 12px;
   color: #555;
+}
+
+/* Media Queries per smartphone e tablet */
+@media (max-width: 480px) {
+  .quiz-container {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  #question {
+    font-size: 16px;
+  }
+
+  .answer-btn, #next-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 320px) {
+  body {
+    padding: 10px;
+  }
+
+  .quiz-container {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  #question {
+    font-size: 15px;
+  }
+
+  .answer-btn, #next-btn {
+    font-size: 13px;
+    padding: 8px;
+  }
 }
