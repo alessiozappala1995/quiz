@@ -159,15 +159,32 @@ nextBtn.onclick = () => {
 };
 
 function showScore() {
+  // Mostra il punteggio
   questionEl.textContent = `SCORE: ${score} / ${quiz.length}`;
+
+  // Svuota le risposte
   answersEl.innerHTML = "";
+
+  // Completa la barra progresso e nasconde il timer
   progressEl.style.width = "100%";
   timerEl.style.display = "none";
 
+  // Aggiunge citazione di Frank Rudy
+  const message = document.createElement("p");
+  message.textContent = `"Everybody thought it was a bad idea." – Frank Rudy`;
+  message.style.fontWeight = "bold";
+  message.style.fontSize = "16px";
+  message.style.fontStyle = "italic";
+  message.style.marginTop = "10px";
+  message.style.color = "#333";
+  message.style.textAlign = "center";
+  answersEl.appendChild(message);
+
+  // Imposta pulsante RESTART
   nextBtn.textContent = "RESTART";
   nextBtn.style.display = "block";
   nextBtn.onclick = () => location.reload();
-}
+};
 
 // avvia il quiz
 loadQuestion();
